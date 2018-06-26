@@ -9,19 +9,22 @@ angular.module('WebOCRApp',['hxPhotos'])
   function AdminController(WebcamService){
     var $ctrl=this;
 
-    $ctrl.data=4;
-    $ctrl.webcam = WebcamService.webcam;
+    $ctrl.imgData=new Image();
+    $ctrl.imgData.src='/upload/test.PNG'
 
-    $ctrl.capture=function(){
-      console.log('Image captured');
-      $ctrl.webcam.makeSnapshot();
-    };
+    // $ctrl.data=4;
+    // $ctrl.webcam = WebcamService.webcam;
+
+    // $ctrl.capture=function(){
+    //   console.log('Image captured');
+    //   $ctrl.webcam.makeSnapshot();
+    // };
 
     $ctrl.convert=function(){
       var img = document.getElementById("capturedImage");
-      Tesseract.recognize(img,{
-              //lang: 'jpn',
-              lang:'eng'
+      Tesseract.recognize($ctrl.imgData,{
+              lang: 'jpn'
+              // lang:'eng'
           })
          .progress(function (p) { console.log('progress', p);})
          .then(function (result) {
