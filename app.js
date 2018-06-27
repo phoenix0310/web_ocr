@@ -1,7 +1,7 @@
 (function () {
 'use strict';
 
-angular.module('WebOCRApp',['hxPhotos','angular-screenshot'])
+angular.module('WebOCRApp',['hxPhotos','angular-screenshot','pdfjsViewer'])
        .controller('AdminController', AdminController);
 
 
@@ -20,20 +20,7 @@ angular.module('WebOCRApp',['hxPhotos','angular-screenshot'])
     //   $ctrl.webcam.makeSnapshot();
     // };
 
-    $ctrl.convert=function(){
-      var img = document.getElementById("capturedImage");
-      Tesseract.recognize($ctrl.imgData,{
-              lang: 'jpn'
-              // lang:'eng'
-          })
-         .progress(function (p) { console.log('progress', p);})
-         .then(function (result) {
-           console.log('result', result);
-           var div = document.getElementById('display');
-           div.innerHTML += result.html;
-         });
-    };
-  
+
     
     $ctrl.advanceApi;
     $ctrl.cancel = cancel;
@@ -72,7 +59,20 @@ angular.module('WebOCRApp',['hxPhotos','angular-screenshot'])
        if ($ctrl.imageApi) {
           $ctrl.imageApi.toPng(function (dataUrl) {
            
-            $ctrl.imgData=dataUrl
+           
+
+            Tesseract.recognize(dataUrl,{
+              lang: 'jpn'
+              // lang:'eng'
+          })
+         .progress(function (p) { console.log('progress', p);})
+         .then(function (result) {
+           console.log('result', result);
+           var div = document.getElementById('display');
+           div.innerHTML += result.html;
+         });
+
+
           });
        }
     }
